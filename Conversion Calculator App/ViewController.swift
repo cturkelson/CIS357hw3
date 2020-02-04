@@ -11,12 +11,21 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var toTextField: UITextField!
     @IBOutlet weak var fromTextField: UITextField!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    let modes: [String] = ["Length","Volume"]
+    var currentModeStr: String
+    var currentModeIndex: Int
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         let touch = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         self.view.addGestureRecognizer(touch)
+        
+        currentModeIndex = 0
+        currentModeStr = modes[currentModeIndex]
     }
     
     @objc func dismissKeyboard() {
@@ -34,6 +43,14 @@ class ViewController: UIViewController {
         toTextField.text = ""
         fromTextField.text = ""
     }
+    
+    @IBAction func modeTapped(_ sender: Any) {
+        currentModeIndex += 1
+        currentModeStr = modes[currentModeIndex % 2]
+        
+        fromTextField.placeholder = "Enter \(currentModeStr) in"
+    }
+    
     @IBAction func calculateTapped(_ sender: UIButton) {
         self.view.endEditing(true)
         if(toTextField.text! == "" && fromTextField.text! != ""){
